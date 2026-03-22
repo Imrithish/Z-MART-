@@ -77,28 +77,31 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !isProcessing && !open && onClose()}>
       {/* Rectangular Page layout: wide, squared corners, grid layout on desktop */}
-      <DialogContent className="w-[95vw] md:w-[85vw] max-w-5xl min-h-[500px] p-0 bg-white border-none rounded-none shadow-2xl flex flex-col md:flex-row overflow-hidden">
+      <DialogContent className="w-[95vw] md:w-[85vw] max-w-5xl min-h-[500px] max-h-[90vh] p-0 bg-white border-none rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-y-auto overflow-x-hidden md:overflow-hidden">
         
         {/* LEFT COLUMN: Modern Invoice/Hero Section */}
-        <div className="w-full md:w-5/12 bg-slate-900 border-r border-slate-800 p-8 md:p-12 text-white relative flex flex-col shrink-0 justify-center">
+        <div className="w-full md:w-5/12 bg-slate-900 border-r border-slate-800 p-6 md:p-12 text-white relative flex flex-col shrink-0 justify-center">
           <div className="absolute top-0 right-0 w-full h-full bg-primary/10 blur-3xl rounded-none scale-150 transform-gpu opacity-50" />
           
-          <DialogHeader className="relative z-10 space-y-6 text-left flex-1 flex flex-col justify-center">
-            <div className="flex items-center gap-2 text-primary">
+          <DialogHeader className="relative z-10 space-y-2 md:space-y-6 text-left flex-1 flex flex-row md:flex-col justify-start items-center md:items-start md:justify-center pr-10 md:pr-0 gap-4 md:gap-0">
+            <div className="flex items-center gap-2 text-primary md:hidden">
+              <ShieldCheck className="h-8 w-8" />
+            </div>
+            <div className="hidden md:flex items-center gap-2 text-primary">
               <ShieldCheck className="h-8 w-8" />
               <span className="font-black tracking-widest uppercase text-sm">Secure Entry</span>
             </div>
             
-            <div className="space-y-2">
-              <DialogDescription className="text-slate-400 font-bold uppercase tracking-widest text-xs">
+            <div className="space-y-1 md:space-y-2 text-left">
+              <DialogDescription className="text-slate-400 font-bold uppercase tracking-widest text-[10px] md:text-xs">
                 Total Amount Due
               </DialogDescription>
-              <DialogTitle className="text-5xl md:text-6xl font-black tracking-tighter">
+              <DialogTitle className="text-3xl md:text-6xl font-black tracking-tighter">
                 ₹{amount.toLocaleString('en-IN')}
               </DialogTitle>
             </div>
             
-            <div className="space-y-4 pt-12 mt-auto">
+            <div className="hidden md:block space-y-4 pt-12 mt-auto">
               <div className="flex gap-4 opacity-50">
                 <div className="w-12 h-8 bg-white/10 rounded-sm" />
                 <div className="w-12 h-8 bg-white/10 rounded-sm" />
@@ -113,7 +116,7 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
           <div className="flex-1 p-6 md:p-12">
             
             {paymentStep === "input" && (
-              <div className="max-w-md mx-auto space-y-8 mt-4">
+              <div className="max-w-md mx-auto space-y-6 md:space-y-8 mt-2 md:mt-4">
                 
                 {/* Rectangular Sharp Tabs */}
                 <div className="flex border-b border-slate-200">
@@ -142,8 +145,8 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
 
                 {/* Card Form */}
                 {activeTab === "card" && (
-                  <form onSubmit={handlePay} className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                    <div className="space-y-3">
+                  <form onSubmit={handlePay} className="space-y-4 md:space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                    <div className="space-y-2 md:space-y-3">
                       <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-widest text-slate-400">Cardholder Name</Label>
                       <div className="relative">
                         <Input 
@@ -158,7 +161,7 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
                       </div>
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-2 md:space-y-3">
                       <Label htmlFor="card" className="text-[10px] font-black uppercase tracking-widest text-slate-400">Card Number</Label>
                       <div className="relative">
                         <Input 
@@ -174,8 +177,8 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-8">
-                      <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-6 md:gap-8">
+                      <div className="space-y-2 md:space-y-3">
                         <Label htmlFor="expiry" className="text-[10px] font-black uppercase tracking-widest text-slate-400">Expiration</Label>
                         <Input 
                           id="expiry"
@@ -187,7 +190,7 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
                           required
                         />
                       </div>
-                      <div className="space-y-3">
+                      <div className="space-y-2 md:space-y-3">
                         <Label htmlFor="cvv" className="text-[10px] font-black uppercase tracking-widest text-slate-400">Security Code</Label>
                         <Input 
                           id="cvv"
@@ -202,7 +205,7 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
                       </div>
                     </div>
 
-                    <Button type="submit" className="w-full h-16 rounded-none bg-slate-900 hover:bg-yellow-400 hover:text-black hover:shadow-yellow-400/20 text-white font-black tracking-widest uppercase mt-8 shadow-xl shadow-slate-900/10 active:scale-95 transition-all text-sm">
+                    <Button type="submit" className="w-full h-14 md:h-16 rounded-none bg-slate-900 hover:bg-yellow-400 hover:text-black hover:shadow-yellow-400/20 text-white font-black tracking-widest uppercase mt-4 md:mt-8 shadow-xl shadow-slate-900/10 active:scale-95 transition-all text-sm">
                       Confirm & Pay
                     </Button>
                   </form>
@@ -210,14 +213,14 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
 
                 {/* UPI Form */}
                 {activeTab === "upi" && (
-                  <form onSubmit={handlePay} className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-300 py-4">
-                    <div className="bg-white border border-slate-200 p-8 rounded-none text-center shadow-sm">
+                  <form onSubmit={handlePay} className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-left-4 duration-300 py-4">
+                    <div className="bg-white border border-slate-200 p-6 md:p-8 rounded-none text-center shadow-sm">
                        <Smartphone className="h-10 w-10 text-slate-900 mx-auto mb-4 opacity-80" />
                        <h4 className="font-black text-slate-900 uppercase tracking-widest">Connect UPI App</h4>
                        <p className="text-xs font-bold text-slate-400 mt-2 uppercase">Google Pay, PhonePe, Paytm</p>
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-2 md:space-y-3">
                       <Label htmlFor="upi" className="text-[10px] font-black uppercase tracking-widest text-slate-400">Virtual Payment Address (VPA)</Label>
                       <div className="relative">
                         <Input 
@@ -232,7 +235,7 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
                       </div>
                     </div>
 
-                    <Button type="submit" className="w-full h-16 rounded-none bg-slate-900 hover:bg-yellow-400 hover:text-black hover:shadow-yellow-400/20 text-white font-black tracking-widest uppercase mt-4 shadow-xl shadow-slate-900/10 active:scale-95 transition-all text-sm">
+                    <Button type="submit" className="w-full h-14 md:h-16 rounded-none bg-slate-900 hover:bg-yellow-400 hover:text-black hover:shadow-yellow-400/20 text-white font-black tracking-widest uppercase mt-4 shadow-xl shadow-slate-900/10 active:scale-95 transition-all text-sm">
                       Send Request
                     </Button>
                   </form>
@@ -240,7 +243,7 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
 
                 {/* QR Form */}
                 {activeTab === "qr" && (
-                  <div className="space-y-8 text-center animate-in fade-in zoom-in-95 duration-300 py-4">
+                  <div className="space-y-6 md:space-y-8 text-center animate-in fade-in zoom-in-95 duration-300 py-4">
                     <div className="bg-white p-4 border border-slate-200 shadow-sm inline-block rounded-none">
                       <div className="relative w-56 h-56 overflow-hidden bg-slate-50">
                         <Image 
@@ -257,7 +260,7 @@ export function PaymentGatewayModal({ isOpen, onClose, amount, onSuccess }: Paym
                       <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Open your UPI app and scan</p>
                     </div>
 
-                    <Button onClick={() => handlePay()} variant="outline" className="w-full h-16 rounded-none border-2 border-slate-900 bg-transparent hover:bg-yellow-400 hover:border-yellow-400 hover:text-black text-slate-900 font-black tracking-widest uppercase mt-4 active:scale-95 transition-all text-sm">
+                    <Button onClick={() => handlePay()} variant="outline" className="w-full h-14 md:h-16 rounded-none border-2 border-slate-900 bg-transparent hover:bg-yellow-400 hover:border-yellow-400 hover:text-black text-slate-900 font-black tracking-widest uppercase mt-4 active:scale-95 transition-all text-sm">
                       Payment Completed Successfully
                     </Button>
                   </div>

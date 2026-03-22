@@ -249,19 +249,19 @@ function ProductList() {
           displayProducts.map((product: any) => (
             <Card 
               key={product.id} 
-              className="group overflow-hidden border border-slate-100 shadow-sm bg-white rounded-none flex flex-col cursor-pointer hover:shadow-xl transition-all duration-300 h-full"
+              className="group overflow-hidden border border-slate-100 shadow-sm bg-white rounded-2xl flex flex-col cursor-pointer hover:shadow-xl transition-all duration-300 h-full"
               onClick={() => handleProductClick(product)}
             >
-              <div className="flex flex-col h-full">
-                <div className="relative aspect-square overflow-hidden bg-slate-50 p-4 md:p-6">
+               <div className="flex flex-row md:flex-col h-full p-2 md:p-0">
+                <div className="relative w-2/5 md:w-full min-h-[160px] md:aspect-square overflow-hidden bg-slate-50 p-2 md:p-6 shrink-0 rounded-xl md:rounded-b-none">
                   <Image 
                     src={product.imageUrl}
                     alt={product.name}
                     fill
-                    className="object-contain p-4 md:p-6 transition-transform duration-500 group-hover:scale-105"
+                    className="object-contain p-2 md:p-6 transition-transform duration-500 group-hover:scale-105 mix-blend-multiply"
                   />
                   {product.isDeal && (
-                    <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 rounded-none text-[8px] font-black tracking-widest uppercase">
+                    <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 rounded-sm text-[8px] font-black tracking-widest uppercase">
                       Deal
                     </div>
                   )}
@@ -270,35 +270,50 @@ function ProductList() {
                   </div>
                 </div>
                 
-                <div className="flex flex-col flex-1 p-4 md:p-5">
-                  <div className="flex-1 space-y-2">
-                    <div className="text-[9px] md:text-[10px] text-primary uppercase tracking-widest font-black">{product.category}</div>
-                    <CardTitle className="text-sm md:text-base font-black text-slate-900 group-hover:text-primary transition-colors line-clamp-2 min-h-[2.5rem] md:min-h-[3rem] uppercase tracking-tight leading-tight">
+                <div className="flex flex-col flex-1 pl-3 md:pl-5 md:p-5 pt-2 pb-2">
+                  <div className="flex-1 space-y-1 md:space-y-2">
+                    <div className="text-[10px] text-slate-500 font-bold uppercase">{product.category}</div>
+                    <CardTitle className="text-sm md:text-base font-medium text-slate-900 group-hover:text-primary transition-colors line-clamp-2 md:min-h-[2.5rem] leading-tight">
                       {product.name}
                     </CardTitle>
-                    <div className="flex items-center gap-1">
-                      <div className="flex">
-                        {[1,2,3,4,5].map(i => (
-                          <Star key={i} className={`h-2.5 w-2.5 md:h-3 md:w-3 ${i <= Math.floor(product.rating || 5) ? 'text-amber-400 fill-amber-400' : 'text-slate-200'}`} />
-                        ))}
+                    
+                    <div className="flex flex-col gap-0.5 pt-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[11px] font-bold text-slate-700">{product.rating || "4.5"}</span>
+                        <div className="flex">
+                          {[1,2,3,4,5].map(i => (
+                            <Star key={i} className={`h-3 w-3 ${i <= Math.floor(product.rating || 5) ? 'text-amber-500 fill-amber-500' : 'text-slate-200'}`} />
+                          ))}
+                        </div>
+                        <span className="text-[10px] text-slate-500">({(product.reviews || 70).toLocaleString()})</span>
                       </div>
-                      <span className="text-[10px] md:text-[11px] font-black text-slate-900 ml-1">{(product.reviews || 0).toLocaleString()}</span>
+                      <span className="text-[10px] text-slate-500">1K+ bought in past month</span>
+                    </div>
+
+                    <div className="pt-2 flex items-baseline gap-1.5 flex-wrap">
+                      <span className="text-xl md:text-2xl font-medium text-slate-900 tracking-tight">₹{product.price.toLocaleString('en-IN')}</span>
+                      <span className="text-[10px] text-slate-500 line-through decoration-slate-400">M.R.P: ₹{Math.floor(product.price * 1.2).toLocaleString('en-IN')}</span>
+                      <span className="text-[10px] text-slate-600">(20% off)</span>
+                    </div>
+
+                    <div className="space-y-0.5 pt-1 pb-2 md:pb-4">
+                      <p className="text-[10px] text-slate-700"><span className="font-bold">FREE delivery</span> Wed, 25 Mar</p>
+                      <p className="text-[10px] text-slate-700">Or fastest delivery <span className="font-bold">Tue, 24 Mar</span></p>
                     </div>
                   </div>
 
-                  <div className="mt-auto pt-4 md:pt-6 border-t border-slate-50 space-y-3">
-                    <span className="text-xl md:text-2xl font-black text-slate-900 tracking-tighter block">{formatCurrency(product.price)}</span>
-                    <div className="flex gap-2">
+                  <div className="mt-auto pt-1 md:pt-4 border-t border-slate-50 md:border-t-0">
+                    <div className="md:flex md:gap-2">
                       <Button 
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="bg-slate-900 hover:bg-primary text-white hover:text-slate-900 flex-1 h-10 md:h-11 text-[9px] md:text-[10px] font-black uppercase tracking-widest rounded-2xl transition-all"
+                        className="w-full md:flex-1 bg-[#ffd814] hover:bg-[#F7CA00] text-black h-9 md:h-11 rounded-full md:rounded-2xl text-xs md:text-[10px] font-medium md:font-black md:uppercase md:tracking-widest shadow-sm transition-all"
                       >
-                        Add to Cart
+                        Add to cart
                       </Button>
                       <Button 
                         variant="outline"
                         onClick={(e) => { e.stopPropagation(); handleProductClick(product); }}
-                        className="h-10 w-10 md:h-11 md:w-11 p-0 rounded-xl border-slate-200"
+                        className="hidden md:flex h-11 w-11 p-0 rounded-xl border-slate-200 shrink-0 items-center justify-center"
                       >
                         <Zap className="h-4 w-4" />
                       </Button>
