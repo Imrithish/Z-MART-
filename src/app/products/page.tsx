@@ -249,11 +249,11 @@ function ProductList() {
           displayProducts.map((product: any) => (
             <Card 
               key={product.id} 
-              className="group overflow-hidden border border-slate-100 shadow-sm bg-white rounded-none flex flex-col cursor-pointer hover:shadow-xl transition-all duration-300 h-full"
+              className="group overflow-hidden border border-slate-100 shadow-sm bg-white rounded-none flex flex-row md:flex-col cursor-pointer hover:shadow-xl transition-all duration-300 h-full"
               onClick={() => handleProductClick(product)}
             >
-              <div className="flex flex-col h-full">
-                <div className="relative aspect-square overflow-hidden bg-slate-50 p-4 md:p-6">
+              <div className="flex flex-row md:flex-col h-full w-full">
+                <div className="relative w-28 h-28 md:aspect-square overflow-hidden bg-slate-50 p-2 md:p-6 shrink-0">
                   <Image 
                     src={product.imageUrl}
                     alt={product.name}
@@ -270,7 +270,7 @@ function ProductList() {
                   </div>
                 </div>
                 
-                <div className="flex flex-col flex-1 p-4 md:p-5">
+                <div className="flex flex-col flex-1 p-3 md:p-5 min-w-0">
                   <div className="flex-1 space-y-2">
                     <div className="text-[9px] md:text-[10px] text-primary uppercase tracking-widest font-black">{product.category}</div>
                     <CardTitle className="text-sm md:text-base font-black text-slate-900 group-hover:text-primary transition-colors line-clamp-2 min-h-[2.5rem] md:min-h-[3rem] uppercase tracking-tight leading-tight">
@@ -286,19 +286,19 @@ function ProductList() {
                     </div>
                   </div>
 
-                  <div className="mt-auto pt-4 md:pt-6 border-t border-slate-50 space-y-3">
+                  <div className="mt-auto pt-3 md:pt-6 border-t border-slate-50 space-y-2.5 md:space-y-3">
                     <span className="text-xl md:text-2xl font-black text-slate-900 tracking-tighter block">{formatCurrency(product.price)}</span>
                     <div className="flex gap-2">
                       <Button 
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="bg-slate-900 hover:bg-primary text-white hover:text-slate-900 flex-1 h-10 md:h-11 text-[9px] md:text-[10px] font-black uppercase tracking-widest rounded-2xl transition-all"
+                        className="bg-slate-900 hover:bg-primary text-white hover:text-slate-900 flex-1 h-9 md:h-11 text-[9px] md:text-[10px] font-black uppercase tracking-widest rounded-2xl transition-all"
                       >
                         Add to Cart
                       </Button>
                       <Button 
                         variant="outline"
                         onClick={(e) => { e.stopPropagation(); handleProductClick(product); }}
-                        className="h-10 w-10 md:h-11 md:w-11 p-0 rounded-xl border-slate-200"
+                        className="h-9 w-9 md:h-11 md:w-11 p-0 rounded-xl border-slate-200"
                       >
                         <Zap className="h-4 w-4" />
                       </Button>

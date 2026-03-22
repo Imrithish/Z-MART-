@@ -32,11 +32,11 @@ const ProductCard = memo(({ product, onProductClick, onAddToCart, onBuyNow }: {
   onBuyNow: (e: React.MouseEvent, p: any) => void
 }) => (
   <div 
-    className="group cursor-pointer flex flex-col h-full bg-white p-4 rounded-[1.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100/50 hover:border-primary/20 relative"
+    className="group cursor-pointer flex flex-row md:flex-col h-full bg-white p-3 md:p-4 rounded-[1.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100/50 hover:border-primary/20 relative"
     onClick={() => onProductClick(product)}
   >
-    <div className="flex flex-col h-full">
-      <div className="relative aspect-square w-full bg-slate-50/50 rounded-xl overflow-hidden p-4 mb-4 group-hover:bg-white transition-colors duration-500">
+    <div className="flex flex-row md:flex-col h-full w-full gap-3 md:gap-0">
+      <div className="relative w-28 h-28 md:w-full md:aspect-square bg-slate-50/50 rounded-xl overflow-hidden p-2 md:p-4 mb-0 md:mb-4 group-hover:bg-white transition-colors duration-500 shrink-0">
         <Image 
           src={product.imageUrl || 'https://picsum.photos/seed/placeholder/400/400'} 
           alt={product.name} 
@@ -69,7 +69,7 @@ const ProductCard = memo(({ product, onProductClick, onAddToCart, onBuyNow }: {
            </div>
         </div>
         
-        <div className="mt-auto pt-4 space-y-3">
+        <div className="mt-auto pt-3 md:pt-4 space-y-2.5 md:space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xl font-black text-slate-900 tracking-tighter">{formatCurrency(product.price)}</span>
             <button 
@@ -77,14 +77,14 @@ const ProductCard = memo(({ product, onProductClick, onAddToCart, onBuyNow }: {
                 e.stopPropagation();
                 onAddToCart(product);
               }}
-              className="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300"
+              className="h-9 w-9 md:h-10 md:w-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300"
             >
               <ShoppingBag className="h-4 w-4" />
             </button>
           </div>
           <Button 
             onClick={(e) => onBuyNow(e, product)}
-            className="w-full h-11 bg-slate-900 hover:bg-primary text-white hover:text-slate-900 font-black uppercase tracking-widest text-[10px] rounded-xl transition-all duration-300 border-none"
+            className="w-full h-10 md:h-11 bg-slate-900 hover:bg-primary text-white hover:text-slate-900 font-black uppercase tracking-widest text-[10px] rounded-xl transition-all duration-300 border-none"
           >
             <Zap className="h-4 w-4 mr-2 fill-current" /> Buy Now
           </Button>
