@@ -221,15 +221,15 @@ function CheckoutContent() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
               {/* Shipping Address Form */}
               <Card className="border-none shadow-sm rounded-3xl overflow-hidden h-full">
-              <CardHeader className="bg-white border-b border-slate-50 p-8">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-slate-100 rounded-xl text-slate-900">
-                    <MapPin className="h-5 w-5" />
+                <CardHeader className="bg-white border-b border-slate-50 p-8">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-slate-100 rounded-xl text-slate-900">
+                      <MapPin className="h-5 w-5" />
+                    </div>
+                    <CardTitle className="text-lg font-black uppercase tracking-widest">Delivery Address</CardTitle>
                   </div>
-                <CardTitle className="text-lg font-black uppercase tracking-widest">Delivery Address</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="p-8 space-y-6 bg-white">
+                </CardHeader>
+                <CardContent className="p-8 space-y-6 bg-white">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Flat, House no., Building</Label>
@@ -302,14 +302,14 @@ function CheckoutContent() {
                     />
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
               {/* Order Summary */}
               <Card className="border-none shadow-xl rounded-3xl overflow-hidden bg-slate-900 text-white h-full flex flex-col">
-              <CardHeader className="p-8 border-b border-white/10">
-                <CardTitle className="text-sm font-black uppercase tracking-[0.3em] text-white/50">Order Summary</CardTitle>
-              </CardHeader>
-              <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
+                <CardHeader className="p-8 border-b border-white/10">
+                  <CardTitle className="text-sm font-black uppercase tracking-[0.3em] text-white/50">Order Summary</CardTitle>
+                </CardHeader>
+                <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
                 <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 no-scrollbar">
                   {orderItems.map((item, idx) => (
                     <div key={idx} className="flex gap-4 items-center group">
@@ -361,50 +361,50 @@ function CheckoutContent() {
                 <p className="text-[9px] text-center text-white/30 font-bold uppercase tracking-widest mt-4">
                   By clicking "Confirm", you agree to Z-MART's shipping and cancellation policies.
                 </p>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Payment Method */}
             <Card className="border-none shadow-sm rounded-3xl overflow-hidden">
-            <CardHeader className="bg-white border-b border-slate-50 p-8">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-slate-100 rounded-xl text-slate-900">
-                  <CreditCard className="h-5 w-5" />
+              <CardHeader className="bg-white border-b border-slate-50 p-8">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-slate-100 rounded-xl text-slate-900">
+                    <CreditCard className="h-5 w-5" />
+                  </div>
+                  <CardTitle className="text-lg font-black uppercase tracking-widest">Payment Method</CardTitle>
                 </div>
-                <CardTitle className="text-lg font-black uppercase tracking-widest">Payment Method</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="p-8 bg-white">
-              <RadioGroup 
-                value={paymentMethod} 
-                onValueChange={(val: any) => setPaymentMethod(val)}
-                className="grid grid-cols-1 md:grid-cols-2 gap-4"
-              >
-                <Label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'COD' ? 'border-primary bg-primary/5' : 'border-slate-100 hover:border-slate-200'}`}>
-                  <RadioGroupItem value="COD" className="sr-only" />
-                  <div className="h-10 w-10 bg-slate-100 rounded-xl flex items-center justify-center">
-                    <Truck className="h-5 w-5 text-slate-500" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <p className="font-black text-sm uppercase">Cash on Delivery</p>
-                    <p className="text-[10px] text-slate-500 font-bold">Pay when your order arrives</p>
-                  </div>
-                </Label>
+              </CardHeader>
+              <CardContent className="p-8 bg-white">
+                <RadioGroup 
+                  value={paymentMethod} 
+                  onValueChange={(val: any) => setPaymentMethod(val)}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                >
+                  <Label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'COD' ? 'border-primary bg-primary/5' : 'border-slate-100 hover:border-slate-200'}`}>
+                    <RadioGroupItem value="COD" className="sr-only" />
+                    <div className="h-10 w-10 bg-slate-100 rounded-xl flex items-center justify-center">
+                      <Truck className="h-5 w-5 text-slate-500" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="font-black text-sm uppercase">Cash on Delivery</p>
+                      <p className="text-[10px] text-slate-500 font-bold">Pay when your order arrives</p>
+                    </div>
+                  </Label>
 
-                <Label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'Online' ? 'border-primary bg-primary/5' : 'border-slate-100 hover:border-slate-200'}`}>
-                  <RadioGroupItem value="Online" className="sr-only" />
-                  <div className="h-10 w-10 bg-slate-100 rounded-xl flex items-center justify-center">
-                    <CreditCard className="h-5 w-5 text-slate-500" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <p className="font-black text-sm uppercase">Online Payment</p>
-                    <p className="text-[10px] text-slate-500 font-bold">Secure Card / UPI / NetBanking</p>
-                  </div>
-                </Label>
-              </RadioGroup>
-            </CardContent>
-          </Card>
+                  <Label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'Online' ? 'border-primary bg-primary/5' : 'border-slate-100 hover:border-slate-200'}`}>
+                    <RadioGroupItem value="Online" className="sr-only" />
+                    <div className="h-10 w-10 bg-slate-100 rounded-xl flex items-center justify-center">
+                      <CreditCard className="h-5 w-5 text-slate-500" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="font-black text-sm uppercase">Online Payment</p>
+                      <p className="text-[10px] text-slate-500 font-bold">Secure Card / UPI / NetBanking</p>
+                    </div>
+                  </Label>
+                </RadioGroup>
+              </CardContent>
+            </Card>
           </form>
       </main>
 

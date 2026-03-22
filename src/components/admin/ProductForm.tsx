@@ -61,7 +61,12 @@ export function ProductForm({ initialData }: { initialData?: any }) {
     category: initialData?.category || '',
     stock: initialData?.stock?.toString() || '',
     features: Array.isArray(initialData?.features) ? initialData.features.join(', ') : (initialData?.features || ''),
-    imageUrl: initialData?.imageUrl || '',
+    imageUrls: (() => {
+      const urls = Array.isArray(initialData?.imageUrls)
+        ? initialData.imageUrls
+        : [initialData?.imageUrl || ""];
+      return [...urls, "", "", ""].slice(0, 4);
+    })(),
   });
 
 
@@ -80,7 +85,8 @@ export function ProductForm({ initialData }: { initialData?: any }) {
       category: formData.category,
       stock: parseInt(formData.stock) || 0,
       features: formData.features.split(',').map((f: string) => f.trim()).filter(Boolean),
-      imageUrl: formData.imageUrl || `https://picsum.photos/seed/${Math.floor(Math.random() * 1000000)}/600/600`,
+      imageUrl: formData.imageUrls[0] || `https://picsum.photos/seed/${Math.floor(Math.random() * 1000000)}/600/600`,
+      imageUrls: formData.imageUrls.filter(Boolean),
       updatedAt: serverTimestamp(),
     };
 
@@ -210,43 +216,66 @@ export function ProductForm({ initialData }: { initialData?: any }) {
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label htmlFor="imageUrl" className={fieldLabelClass}>Image URL</Label>
+                <Label className={fieldLabelClass}>Product Images (4)</Label>
               </div>
-              <div className="relative group">
-                <Input 
-                  id="imageUrl" 
-                  value={formData.imageUrl}
-                  onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
-                  placeholder="Paste an image URL (e.g., https://...)" 
-                  className={inputClass}
-                />
-                {formData.imageUrl && (
-                  <button 
-                    type="button"
-                    onClick={() => setFormData({...formData, imageUrl: ''})}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-500"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-              
-              {/* Image Preview Area */}
-              {formData.imageUrl && (
-                <div className="mt-4 p-4 border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Image Preview</p>
-                  <div className="relative aspect-video w-full max-w-sm rounded-xl overflow-hidden bg-white border border-slate-100 flex items-center justify-center">
-                    <img 
-                      src={formData.imageUrl} 
-                      alt="Preview" 
-                      className="max-h-full max-w-full object-contain"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Invalid+Image+URL';
-                      }}
-                    />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {formData.imageUrls.map((url, idx) => (
+                  <div key={idx} className="space-y-2">
+                    <Label htmlFor={`imageUrl-${idx}`} className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                      {idx === 0 ? "Image 1 (Main)" : `Image ${idx + 1}`}
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id={`imageUrl-${idx}`}
+                        value={url}
+                        onChange={(e) => {
+                          const next = [...formData.imageUrls];
+                          next[idx] = e.target.value;
+                          setFormData({ ...formData, imageUrls: next });
+                        }}
+                        placeholder="Paste an image URL (e.g., https://...)"
+                        className={inputClass}
+                      />
+                      {url && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const next = [...formData.imageUrls];
+                            next[idx] = "";
+                            setFormData({ ...formData, imageUrls: next });
+                          }}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-500"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
+                ))}
+              </div>
+
+              <div className="mt-4 p-4 border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Image Preview</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {formData.imageUrls.map((url, idx) => (
+                    <div key={idx} className="relative aspect-square w-full rounded-xl overflow-hidden bg-white border border-slate-100 flex items-center justify-center">
+                      {url ? (
+                        <img
+                          src={url}
+                          alt={`Preview ${idx + 1}`}
+                          className="max-h-full max-w-full object-contain"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Invalid+Image+URL';
+                          }}
+                        />
+                      ) : (
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">Empty</span>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>

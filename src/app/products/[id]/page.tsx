@@ -11,7 +11,7 @@ import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
-import { use, useMemo } from "react";
+import { use, useMemo, useState, useEffect } from "react";
 import { useUser, useDoc, useFirestore, useCollection } from "@/firebase";
 import { collection, doc, orderBy, query } from "firebase/firestore";
 import { WishlistButton } from "@/components/storefront/WishlistButton";
@@ -79,6 +79,20 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
     return picked.slice(0, 4);
   }, [allProducts, product]);
 
+  const productImages = useMemo(() => {
+    if (!product) return [];
+    return Array.isArray((product as any).imageUrls) && (product as any).imageUrls.length > 0
+      ? (product as any).imageUrls
+      : [product.imageUrl];
+  }, [product]);
+  const [activeImage, setActiveImage] = useState<string>("");
+
+  useEffect(() => {
+    if (productImages.length > 0) {
+      setActiveImage(productImages[0]);
+    }
+  }, [productImages]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
@@ -116,7 +130,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
       description: (
         <div className="flex items-center gap-3 mt-2">
           <div className="relative h-12 w-12 rounded-none bg-slate-50 border border-slate-100 overflow-hidden shrink-0">
-            <Image src={product.imageUrl} alt={product.name} fill className="object-contain p-1" />
+            <Image src={productImages[0] || product.imageUrl} alt={product.name} fill className="object-contain p-1" />
           </div>
           <div className="flex flex-col gap-0.5">
             <p className="text-xs font-black text-slate-900 line-clamp-1">{product.name}</p>
@@ -145,6 +159,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
     }
     router.push(`/checkout?productId=${product.id}`);
   };
+
 
   const discountPercentage = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -179,7 +194,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
             {/* Image Gallery (Left) */}
             <div className="bg-white/60 border border-black/10 flex flex-col">
             <div className="relative aspect-square w-full bg-gradient-to-br from-white via-[#fbf9f6] to-[#f1ece6] overflow-hidden group">
-              <Image src={product.imageUrl} alt={product.name} fill className="object-contain p-2 transition-transform duration-700 group-hover:scale-[1.06]" priority />
+              <Image src={activeImage || product.imageUrl} alt={product.name} fill className="object-contain p-2 transition-transform duration-700 group-hover:scale-[1.06]" priority />
               {product.isDeal && (
                 <Badge className="absolute top-4 left-4 bg-red-600 text-white font-black uppercase text-[10px] tracking-[0.2em] px-3 py-1.5 border-none rounded-full shadow">
                   Limited Time Deal
@@ -187,10 +202,20 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
               )}
             </div>
             <div className="grid grid-cols-4 gap-1.5 p-2 border-t border-black/10 bg-white/60">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="relative aspect-square bg-white/80 border border-black/10 transition-all duration-200 hover:border-black/20 hover:shadow-sm">
-                  <Image src={product.imageUrl} alt={`${product.name} ${i}`} fill className="object-contain p-2 transition-transform duration-300 hover:scale-105" />
-                </div>
+              {((productImages.length > 0 ? productImages : [product.imageUrl]).length >= 4
+                ? (productImages.length > 0 ? productImages : [product.imageUrl]).slice(0, 4)
+                : [...(productImages.length > 0 ? productImages : [product.imageUrl]), ...Array(4 - (productImages.length > 0 ? productImages : [product.imageUrl]).length).fill((productImages.length > 0 ? productImages : [product.imageUrl])[0] || product.imageUrl)]
+              ).map((img: string, i: number) => (
+                <button
+                  key={`${img}-${i}`}
+                  type="button"
+                  onClick={() => setActiveImage(img)}
+                  className={`relative aspect-square bg-white/80 border transition-all duration-200 hover:border-black/20 hover:shadow-sm ${
+                    activeImage === img ? "border-black/40 shadow-sm" : "border-black/10"
+                  }`}
+                >
+                  <Image src={img} alt={`${product.name} ${i + 1}`} fill className="object-contain p-2 transition-transform duration-300 hover:scale-105" />
+                </button>
               ))}
             </div>
             </div>

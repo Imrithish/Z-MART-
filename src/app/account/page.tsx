@@ -230,6 +230,10 @@ export default function UserDashboard() {
       });
   };
 
+  const resolveProductId = (item: any) => {
+    return item?.productId || item?.id || item?.product?.id || null;
+  };
+
   if (authLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center">
@@ -396,8 +400,12 @@ export default function UserDashboard() {
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                const pid = order.items?.[0]?.productId;
-                                if (pid) router.push(`/products/${pid}`);
+                                const pid = resolveProductId(order.items?.[0]);
+                                if (pid) {
+                                  router.push(`/products/${pid}`);
+                                } else {
+                                  toast({ title: "Product not found", description: "This item link is unavailable." });
+                                }
                               }}
                               className="relative h-24 w-24 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden p-2 group-hover:scale-105 transition-transform duration-500"
                             >
@@ -431,8 +439,11 @@ export default function UserDashboard() {
                                           type="button"
                                           onClick={(e) => {
                                             e.stopPropagation();
-                                            if (item.productId) {
-                                              router.push(`/products/${item.productId}`);
+                                            const pid = resolveProductId(item);
+                                            if (pid) {
+                                              router.push(`/products/${pid}`);
+                                            } else {
+                                              toast({ title: "Product not found", description: "This item link is unavailable." });
                                             }
                                           }}
                                           className="w-full flex flex-col items-center gap-2 text-center bg-white/60 backdrop-blur border border-white/60 rounded-xl p-2 hover:shadow-xl hover:-translate-y-0.5 transition-all animate-in fade-in zoom-in-95"
@@ -462,8 +473,12 @@ export default function UserDashboard() {
                                   type="button"
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    const pid = order.items?.[0]?.productId;
-                                    if (pid) router.push(`/products/${pid}`);
+                                    const pid = resolveProductId(order.items?.[0]);
+                                    if (pid) {
+                                      router.push(`/products/${pid}`);
+                                    } else {
+                                      toast({ title: "Product not found", description: "This item link is unavailable." });
+                                    }
                                   }}
                                   className="text-[11px] font-black text-primary uppercase tracking-widest hover:underline line-clamp-1 text-left"
                                 >

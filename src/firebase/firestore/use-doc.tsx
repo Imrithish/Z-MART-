@@ -6,6 +6,7 @@ import {
   onSnapshot,
   DocumentData,
   DocumentSnapshot,
+  getDocFromCache,
 } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
@@ -23,6 +24,17 @@ export function useDoc<T = DocumentData>(docRef: DocumentReference<T> | null) {
     }
 
     setLoading(true);
+    // Try instant cache for fast UI response
+    getDocFromCache(docRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          setData({ ...(snapshot.data() as any), id: snapshot.id });
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        // Ignore cache miss
+      });
     const unsubscribe = onSnapshot(
       docRef,
       (snapshot: DocumentSnapshot<T>) => {
